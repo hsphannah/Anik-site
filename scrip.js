@@ -1,14 +1,20 @@
 // Aguarda o carregamento completo do DOM antes de executar o script
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded. Script start.'); // Adicione esta linha
 
     // --- Lógica da Galeria e Filtros ---
-    // Seleciona todos os botões de filtro e os itens da galeria
     const filterButtons = document.querySelectorAll('.filter-btn');
     const galleryItems = document.querySelectorAll('.gallery-item');
 
-    // Adiciona um 'click' listener a cada botão de filtro
+    console.log('Filter Buttons found:', filterButtons.length); // Adicione esta linha
+    console.log('Gallery Items found:', galleryItems.length);   // Adicione esta linha
+    console.log(galleryItems); // Adicione esta linha para ver o conteúdo da lista
+
+    // Adiciona 'click' listener a cada botão de filtro
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
+            console.log('Filter button clicked!'); // Adicione esta linha
+
             // Remove a classe 'active' de todos os botões de filtro
             filterButtons.forEach(btn => btn.classList.remove('active'));
             // Adiciona a classe 'active' ao botão clicado
@@ -16,43 +22,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Obtém o valor do filtro (ex: 'lapis', 'digital', 'all')
             const filterValue = this.getAttribute('data-filter');
+            console.log('Filter value:', filterValue); // Adicione esta linha
 
             // Itera sobre cada item da galeria para aplicar o filtro
             galleryItems.forEach(item => {
-                // Adiciona a classe 'hidden' para iniciar a transição de ocultação
-                item.classList.add('hidden');
+                console.log('Processing item:', item.classList); // Adicione esta linha
+                item.classList.add('hidden'); // Esta é a linha que supostamente não funciona
 
-                // Usa um timeout para permitir que a transição CSS ocorra
-                // antes de alterar o 'display' do elemento
                 setTimeout(() => {
                     if (filterValue === 'all' || item.classList.contains(filterValue)) {
-                        item.classList.remove('hidden'); // Remove 'hidden' para mostrar
-                        item.style.display = 'block'; // Garante que o item esteja visível
+                        item.classList.remove('hidden');
+                        item.style.display = 'block';
                     } else {
-                        item.style.display = 'none'; // Esconde completamente o item
+                        item.style.display = 'none';
                     }
-                }, 300); // O tempo (300ms) deve corresponder à duração da transição no CSS
+                }, 300); // 300ms deve corresponder à duração da transição no CSS
             });
+
+            // Isso simula um clique no botão "Todos" ao carregar a página
+            // Garante que todos os itens da galeria sejam exibidos inicialmente
+            // document.querySelector('.filter-btn[data-filter="all"]').click(); // Comente ou remova esta linha para teste, ela pode causar loops
         });
     });
 
-    // Simula um clique no botão 'Todos' ao carregar a página
-    // Isso garante que todos os itens da galeria sejam exibidos inicialmente
-    document.querySelector('.filter-btn[data-filter="all"]').click();
+    // Opcional: Simula um clique no botão "Todos" ao carregar a página
+    // Garante que todos os itens da galeria sejam exibidos inicialmente
+    const allButton = document.querySelector('.filter-btn[data-filter="all"]');
+    if (allButton) {
+        allButton.click(); // Garante que "Todos" esteja ativo na carga inicial
+        console.log('"Todos" button clicked on load.'); // Adicione esta linha
+    }
 
-    // Adiciona um 'click' listener a cada item da galeria
-    galleryItems.forEach(item => {
-        item.addEventListener('click', function() {
-            // Obtém o caminho da imagem (src) e o texto alternativo (alt) do item clicado
-            const imgSrc = this.querySelector('img').src;
-            const imgAlt = this.querySelector('img').alt;
-
-            lightbox.style.display = 'block'; // Torna o lightbox visível
-            lightboxImg.src = imgSrc // Define a imagem a ser exibida no lightbox
-            lightboxImg.alt = imgAlt; // Define o texto alt para acessibilidade
-            lightboxCaption.textContent = imgAlt; // Define a legenda do lightbox
-        });
-    });
+    // --- Lógica do Lightbox (Modo Teatro para Imagens da Galeria) ---
+    // ...
+});
     
    // --- Lógica para Busca de Unidades por CEP ---
     // Seleciona os elementos relacionados à busca de unidades
