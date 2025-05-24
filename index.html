@@ -6,43 +6,9 @@
     <title>Art Anik School</title>
     <link rel="shortcut icon" href="imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script> 
-<script>
-  (function(){
-    emailjs.init("Rt5wDSGDdDjPdwP9");
-  })();
-</script>
 
     </head>
 <body>
-
-    <div id="lightbox" class="lightbox">
-        <span class="close-btn">&times;</span>
-        <img class="lightbox-content" id="lightbox-img" src="" alt="Imagem Ampliada">
-        <div class="lightbox-caption" id="lightbox-caption"></div>
-
-        <form id="form-contato">
-    <input type="text" name="nome" placeholder="Seu nome" required>
-    <input type="email" name="email" placeholder="Seu email" required>
-    <textarea name="mensagem" placeholder="Sua mensagem" required></textarea>
-    <button type="submit">Enviar</button>
-  </form>
-
-        <script>
-  document.getElementById('form-contato').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    emailjs.sendForm('SEU_SERVICE_ID', 'SEU_TEMPLATE_ID', this)
-      .then(function(response) {
-        alert('Mensagem enviada com sucesso!');
-        document.getElementById('form-contato').reset();
-      }, function(error) {
-        alert('Ocorreu um erro ao enviar a mensagem. Tente novamente.');
-        console.error(error);
-      });
-  });
-</script>
-
     </div>
 
     <header>
@@ -142,7 +108,7 @@
                 <h2>Nossa Galeria de Arte</h2>
 
                 <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="all">Todos</button>
                     <button class="filter-btn" data-filter="lapis">Lápis</button>
                     <button class="filter-btn" data-filter="aquarela">Aquarela</button>
                     <button class="filter-btn" data-filter="digital">Digital</button>
