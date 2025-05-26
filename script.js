@@ -146,3 +146,43 @@ cepInput.addEventListener('input', function(e) {
     }
     e.target.value = value;
 }); 
+// --- Lógica do Lightbox (Modo Teatro para Imagens da Galeria) ---
+// Seleciona os elementos do lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxCaption = document.getElementById('lightbox-caption');
+const closeBtn = document.querySelector('.close-btn');
+
+// Adiciona um 'click' listener a cada item da galeria
+galleryItems.forEach(item => { // 'galleryItems' já é definido no início para os filtros
+    item.addEventListener('click', function() {
+        // Obtém o caminho da imagem (src) e o texto alternativo (alt) do item clicado
+        const imgSrc = this.querySelector('img').src;
+        const imgAlt = this.querySelector('img').alt;
+
+        lightbox.style.display = 'block'; // Torna o lightbox visível
+        lightboxImg.src = imgSrc; // Define a imagem a ser exibida no lightbox
+        lightboxImg.alt = imgAlt; // Define o texto alt para acessibilidade
+        lightboxCaption.textContent = imgAlt; // Define a legenda do lightbox
+    });
+});
+
+// Adiciona 'click' listener ao botão de fechar o lightbox
+closeBtn.addEventListener('click', function() {
+    lightbox.style.display = 'none'; // Oculta o lightbox
+});
+
+// Adiciona 'click' listener ao fundo do lightbox para fechá-lo
+lightbox.addEventListener('click', function(e) {
+    // Verifica se o clique foi no fundo (e não na imagem)
+    if (e.target === lightbox) {
+        lightbox.style.display = 'none'; // Oculta o lightbox
+    }
+});
+
+// Adiciona 'keydown' listener para fechar o lightbox com a tecla ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && lightbox.style.display === 'block') {
+        lightbox.style.display = 'none'; // Oculta o lightbox
+    }
+});
