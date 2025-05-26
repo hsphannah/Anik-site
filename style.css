@@ -133,7 +133,7 @@ nav ul li a:hover {
     color: var(--white);
     text-align: center;
     padding: 80px 0;
-    background-image: url('images/aquarela-anik.jpg'); /* Caminho para sua imagem de fundo */
+    background-image: url('imagens/aquarela-anik.jpg'); /* Caminho para sua imagem de fundo */
     background-size: cover;
     background-position: center;
 }
@@ -257,7 +257,7 @@ section[id] { /* Seleciona qualquer seção que tenha um ID (como #home, #cursos
     overflow: hidden;
 
     /* Imagem de fundo padrão para os itens de curso */
-    background-image: url('images/logo-anik.jfif'); /* Ajuste para uma imagem padrão ou remova */
+    background-image: url('imagens/logo-anik.jfif'); /* Ajuste para uma imagem padrão ou remova */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
