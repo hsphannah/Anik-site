@@ -223,17 +223,39 @@ if (contactForm) { // Verifica se o formulário existe
             user_email: userEmail, // Este nome deve corresponder a {{user_email}} no seu template
             message: message // Este nome deve corresponder a {{message}} no seu template
         };
+// 1. ENVIAR E-MAIL DE NOTIFICAÇÃO PARA VOCÊ
+        emailjs.send(
+            'SEU_SERVICE_ID_AQUI',       // Substitua pelo seu Service ID real (ex: 'service_xxxxxxxx')
+            'SEU_TEMPLATE_ID_NOTIFICACAO', // Substitua pelo ID do seu NOVO template (ex: 'template_yyyyyyyy')
+            commonTemplateParams
+        )
+        .then(function(response) {
+            console.log('E-mail de NOTIFICAÇÃO enviado com sucesso!', response.status, response.text);
 
-        // Envie o e-mail usando o EmailJS
-        emailjs.send('mensagem','template_gnzn6uw',templateParams)
-            .then(function(response) {
-                console.log('E-mail enviado com sucesso!', response.status, response.text);
-                alert('Sua mensagem foi enviada com sucesso! Em breve entraremos em contato.');
-                contactForm.reset(); // Limpa o formulário após o envio
-            }, function(error) {
-                console.error('Falha ao enviar o e-mail:', error);
-                alert('Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.');
+            // 2. ENVIAR E-MAIL DE RESPOSTA AUTOMÁTICA PARA O CLIENTE
+            // Este template só precisa do nome e e-mail do cliente, a mensagem é fixa no template
+            emailjs.send(
+                'SEU_SERVICE_ID_AQUI',       // O mesmo Service ID
+                'template_vuutzw2',          // O ID do seu template de resposta automática
+                {
+                    user_name: userName,    // O nome do cliente para o Olá {{user_name}}
+                    user_email: userEmail   // O e-mail do cliente para o "To Email" do template
+                }
+            )
+            .then(function(responseAuto) {
+                console.log('E-mail de RESPOSTA AUTOMÁTICA enviado com sucesso!', responseAuto.status, responseAuto.text);
+                alert('Sua mensagem foi enviada com sucesso! Você receberá uma confirmação por e-mail.');
+                contactForm.reset(); // Limpa o formulário após ambos os envios
+            }, function(errorAuto) {
+                console.error('Falha ao enviar e-mail de RESPOSTA AUTOMÁTICA:', errorAuto);
+                alert('Sua mensagem foi enviada, mas houve um erro ao enviar a confirmação. Por favor, entre em contato diretamente se não receber.');
+                contactForm.reset(); // Ainda limpa o formulário
             });
+
+        }, function(errorNotification) {
+            console.error('Falha ao enviar e-mail de NOTIFICAÇÃO:', errorNotification);
+            alert('Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.');
+        });
     });
 }
 }); // <--- ESTA CHAVE AGORA FECHA TODO O CÓDIGO
