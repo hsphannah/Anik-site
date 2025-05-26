@@ -203,4 +203,37 @@ document.addEventListener('DOMContentLoaded', function() {
             e.target.value = value;
         });
     }
+    // --- Lógica de Envio de Formulário com EmailJS ---
+const contactForm = document.querySelector('.contact-form-column form'); // Seleciona o formulário
+
+if (contactForm) { // Verifica se o formulário existe
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Impede o envio padrão do formulário (que recarregaria a página)
+
+        console.log('Formulário de contato submetido!');
+
+        // Captura os valores dos campos do formulário
+        const userName = document.getElementById('nome').value;
+        const userEmail = document.getElementById('email').value;
+        const message = document.getElementById('mensagem').value;
+
+        // Crie o objeto de parâmetros para o template do EmailJS
+        const templateParams = {
+            user_name: userName, // Este nome deve corresponder a {{user_name}} no seu template
+            user_email: userEmail, // Este nome deve corresponder a {{user_email}} no seu template
+            message: message // Este nome deve corresponder a {{message}} no seu template
+        };
+
+        // Envie o e-mail usando o EmailJS
+        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+            .then(function(response) {
+                console.log('E-mail enviado com sucesso!', response.status, response.text);
+                alert('Sua mensagem foi enviada com sucesso! Em breve entraremos em contato.');
+                contactForm.reset(); // Limpa o formulário após o envio
+            }, function(error) {
+                console.error('Falha ao enviar o e-mail:', error);
+                alert('Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.');
+            });
+    });
+}
 }); // <--- ESTA CHAVE AGORA FECHA TODO O CÓDIGO
