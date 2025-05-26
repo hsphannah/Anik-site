@@ -225,7 +225,7 @@ if (contactForm) { // Verifica se o formulário existe
         };
 
         // Envie o e-mail usando o EmailJS
-        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+        emailjs.send('mensagem','template_gnzn6uw',templateParams)
             .then(function(response) {
                 console.log('E-mail enviado com sucesso!', response.status, response.text);
                 alert('Sua mensagem foi enviada com sucesso! Em breve entraremos em contato.');
