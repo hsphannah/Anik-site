@@ -6,8 +6,10 @@
     <title>Art Anik School</title>
     <link rel="shortcut icon" href="imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+
     </head>
 <body>
+    </div>
 
     <header>
         <div class="container">
@@ -16,9 +18,7 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#home">Início</a></li>
-                    <li><a href="#sobre">Sobre Nós</a></li>
-                    <li><a href="#cursos">Nossos Cursos</a></li>
+                    <li><a href="#home">Início</a></li> <li><a href="#sobre">Sobre Nós</a></li> <li><a href="#cursos">Nossos Cursos</a></li>
                     <li><a href="#galeria">Galeria de Desenhos</a></li>
                     <li><a href="#unidades">Nossas Unidades</a></li>
                     <li><a href="#contato">Contato</a></li>
@@ -45,7 +45,7 @@
                     <iframe
                         width="560"
                         height="315"
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"  title="YouTube video player"
+                        src="https://www.youtube.com/embed/Y6bc5iAzfeo?si=pVyvpsDhNUJ7yjgO"title="YouTube video player"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin"
@@ -100,3 +100,130 @@
                         <a href="#" class="btn-saiba-mais">Saiba Mais</a>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section id="galeria" class="gallery">
+            <div class="container">
+                <h2>Nossa Galeria de Arte</h2>
+
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="lapis">Lápis</button>
+                    <button class="filter-btn" data-filter="personagem">Personagem</button>
+                    <button class="filter-btn" data-filter="digital">Digital</button>
+                    <button class="filter-btn" data-filter="caricatura">Caricatura</button>
+                    <button class="filter-btn" data-filter="kawaii">Kawaii</button>
+                </div>
+
+                <div class="gallery-scroll-container">
+                    <div class="gallery-grid">
+                        <div class="gallery-item caricatura">
+                            <img src="imagens/anik-caricatura.jpg" alt="Caricatura de Aluno" >
+                            <p>Caricatura</p>
+                        </div>
+                        <div class="gallery-item lapis">
+                            <img src="imagens/anik lapis.jfif" alt="Pintura a Lápis">
+                            <p>Lápis</p>
+                        </div>
+                        <div class="gallery-item personagem">
+                            <img src="imagens/personagem.jpg" alt="Personagem de Aluno">
+                            <p>Personagem</p>
+                        </div>
+                        <div class="gallery-item personagem">
+                            <img src="imagens/personagem2.jpg" alt="Personagem de Aluno">
+                            <p>Personagem</p>
+                        </div>
+                        <div class="gallery-item kawaii">
+                            <img src="imagens/kawaii.jpg" alt="Kawaii de Aluno">
+                            <p>Kawaii</p>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="unidades" class="units">
+            <div class="container">
+                <h2>Encontre a Unidade Art Anik Mais Próxima</h2>
+                <p>Digite seu CEP para encontrar a unidade Art Anik mais conveniente para você.</p>
+                <div class="cep-search">
+                    <div class="form-group">
+                        <label for="cep">CEP:</label>
+                        <input type="text" id="cep" name="cep" placeholder="Ex: 88000-000" maxlength="9">
+                    </div>
+                    <button id="find-unit-btn" class="btn-cta">Buscar Unidade</button>
+                </div>
+                <div id="unit-results" class="unit-results">
+                    <p>Nenhuma unidade encontrada para o CEP informado.</p>
+                </div>
+            </div> </section>
+
+        <section id="contato" class="contact">
+            <div class="container">
+                <h2>Fale Conosco e Avaliações</h2>
+                <p>Entre em contato para saber mais sobre nossos cursos ou confira o que dizem nossos alunos!</p>
+
+                <div class="contact-content-wrapper">
+                    <div class="contact-form-column">
+                        <h3>Envie sua Mensagem</h3>
+                        <form action="#" method="POST">
+                            <div class="form-group">
+                                <label for="nome">Nome:</label>
+                                <input type="text" id="nome" name="nome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mensagem">Mensagem:</label>
+                                <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn-submit">Enviar Mensagem</button>
+                        </form>
+                    </div>
+
+                   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+                    <script>
+                         (function(){
+                         emailjs.init("Rt5wDSGDdDjPdwP9a"); 
+                         })();
+                    </script>
+
+                    <div class="contact-reviews-column">
+                        <h3>O Que Nossos Alunos Dizem (Google)</h3>
+                        <div class="google-review-item">
+                            <p class="review-text">Visitar a exposição da Anik Art School no Shopping Itaguaçu foi surpreendente. As obras dos alunos são incríveis, e a atmosfera inspiradora. Grande oportunidade para ver o talento florescer. Recomendo a todos!</p>
+                            <p class="reviewer-name">Alice Moura Gonçalves<span class="stars">★★★★★</span></p>
+                        </div>
+                        <div class="google-review-item">
+                            <p class="review-text">Gostaria de expressar minha gratidão à equipe da escola NiKi Art. As professoras são muito legais e extremamente queridas, sempre demonstrando dedicação e carinho no ensino. Meu filho tem se desenvolvido muito bem, e fico impressionado com o progresso dele. A exposição de artes foi excelente, muito bem bolada e cheia de criatividade. Parabéns pelo trabalho incrível! Obrigado por todo o empenho e cuidado com os alunos.</p>
+                            <p class="reviewer-name">Sulivan Wainer<span class="stars">★★★★★</span></p>
+                        </div>
+                        <div class="google-review-item">
+                            <p class="review-text">Minha filha Valentina ama as aulas da niki. Ela frequenta a sede do estreito, e adora estar lá aprendendo com o prof Gustavo</p>
+                            <p class="reviewer-name">Fernanda Fernandes <span class="stars">★★★★★</span></p>
+                        </div>
+                        <a href="https://www.google.com/search?sca_esv=237638b250c80c54&hl=pt-BR&gl=br&sxsrf=AHTn8zpCSlDcDK4VnIA7eJ2dUb3yyB5rCg:1748031433855&si=APYL9bs7Hg2KMLB-4tSoTdxuOx8BdRvHbByC_AuVpNyh0x2KzS6QqToaq2Y2NDl3TA8XL1BQ0loG26JLYK1jK0sDxj1zjrDSYzBqxmPypVs4-TT2yoiuxRQslXrbFFdx8STtUmboTS6OmR5zhph8wD2ujuR1o2Nw4wuWleU6bkNnrYhtK8KtkII%3D&q=ANIK+ART+SCHOOL+CENTRO+FLORIANOPOLIS+Coment%C3%A1rios&sa=X&ved=2ahUKEwjhia_FtLqNAxWXO7kGHZw3CUwQ0bkNegQIIhAE&biw=1680&bih=835&dpr=2" target="_blank" class="btn-saiba-mais">Ver Mais Avaliações no Google</a>
+                    </div>
+                </div>
+            </div> </section>
+    </main> <footer>
+        <div class="container">
+            <p>© 2025 Anik Art School. Todos os direitos reservados.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/anikartschool/" target="_blank">Instagram</a>
+                <a href="https://www.youtube.com/@anikartschool0/featured" target="_blank">Youtube</a>
+                <a href="https://wa.me/message/OVI2GSZT6WMUB1" target="_blank">WhatsApp</a> </div>
+        </div>
+        <div id="lightbox" class="lightbox">
+    <span class="close-btn">&times;</span>
+    <img class="lightbox-content" id="lightbox-img" src="" alt="Imagem em destaque">
+    <div id="lightbox-caption" class="lightbox-caption"></div>
+</div>
+    </footer>
+    <script src="script.js"></script>
+
+</body>
+</html>
