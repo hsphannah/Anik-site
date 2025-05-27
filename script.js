@@ -225,18 +225,17 @@ if (contactForm) { // Verifica se o formulário existe
         };
 // 1. ENVIAR E-MAIL DE NOTIFICAÇÃO PARA VOCÊ
         emailjs.send(
-            'SEU_SERVICE_ID_AQUI',       // Substitua pelo seu Service ID real (ex: 'service_xxxxxxxx')
-            'SEU_TEMPLATE_ID_NOTIFICACAO', // Substitua pelo ID do seu NOVO template (ex: 'template_yyyyyyyy')
+            'mensagem',
+            'template_jk5qxpr',
             commonTemplateParams
         )
         .then(function(response) {
             console.log('E-mail de NOTIFICAÇÃO enviado com sucesso!', response.status, response.text);
 
             // 2. ENVIAR E-MAIL DE RESPOSTA AUTOMÁTICA PARA O CLIENTE
-            // Este template só precisa do nome e e-mail do cliente, a mensagem é fixa no template
             emailjs.send(
-                'SEU_SERVICE_ID_AQUI',       // O mesmo Service ID
-                'template_vuutzw2',          // O ID do seu template de resposta automática
+                'mensagem',
+                'template_gnzn6uw',
                 {
                     user_name: userName,    // O nome do cliente para o Olá {{user_name}}
                     user_email: userEmail   // O e-mail do cliente para o "To Email" do template
@@ -258,4 +257,4 @@ if (contactForm) { // Verifica se o formulário existe
         });
     });
 }
-}); // <--- ESTA CHAVE AGORA FECHA TODO O CÓDIGO
+});
