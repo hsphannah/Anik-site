@@ -4,30 +4,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Lógica da Galeria e Filtros ---
     const filterButtons = document.querySelectorAll('.filter-btn');
-    const galleryItems = document.querySelectorAll('.gallery-item'); // galleryItems definida AQUI!
+    const galleryItems = document.querySelectorAll('.gallery-item');
 
     console.log('Filter Buttons found:', filterButtons.length);
     console.log('Gallery Items found:', galleryItems.length);
     console.log(galleryItems);
 
-    // Adiciona 'click' listener a cada botão de filtro
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
             console.log('Filter button clicked!');
-
-            // Remove a classe 'active' de todos os botões de filtro
             filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Adiciona a classe 'active' ao botão clicado
             this.classList.add('active');
 
-            // Obtém o valor do filtro (ex: 'lapis', 'digital', 'all')
             const filterValue = this.getAttribute('data-filter');
             console.log('Filter value:', filterValue);
 
-            // Itera sobre cada item da galeria para aplicar o filtro
             galleryItems.forEach(item => {
                 console.log('Processing item:', item.classList);
-                item.classList.add('hidden'); // Esta é a linha que supostamente não funciona
+                item.classList.add('hidden');
 
                 setTimeout(() => {
                     if (filterValue === 'all' || item.classList.contains(filterValue)) {
@@ -36,36 +30,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         item.style.display = 'none';
                     }
-                }, 300); // 300ms deve corresponder à duração da transição no CSS
+                }, 300);
             });
         });
     });
 
-    // Opcional: Simula um clique no botão "Todos" ao carregar a página
     const allButton = document.querySelector('.filter-btn[data-filter="all"]');
     if (allButton) {
-        allButton.click(); // Garante que "Todos" esteja ativo na carga inicial
+        allButton.click();
         console.log('"Todos" button clicked on load.');
     }
 
     // --- Lógica do Lightbox (Modo Teatro para Imagens da Galeria) ---
-    // Seleciona os elementos do lightbox
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
     const closeBtn = document.querySelector('.close-btn');
 
-    // Verifique se os elementos do lightbox são encontrados (Adicionei estes logs para depuração)
     console.log('Lightbox DIV encontrado:', lightbox);
     console.log('Lightbox Imagem encontrada:', lightboxImg);
     console.log('Lightbox Legenda encontrada:', lightboxCaption);
     console.log('Botão de fechar encontrado:', closeBtn);
 
-    // Adiciona um 'click' listener a cada item da galeria
-    galleryItems.forEach(item => { // 'galleryItems' AGORA está definida e acessível aqui!
+    galleryItems.forEach(item => {
         item.addEventListener('click', function() {
             console.log('Item da galeria clicado!', this);
-            // Obtém o caminho da imagem (src) e o texto alternativo (alt) do item clicado
             const imgSrc = this.querySelector('img').src;
             const imgAlt = this.querySelector('img').alt;
 
@@ -73,74 +62,65 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('ALT da imagem clicada:', imgAlt);
 
             if (lightbox) {
-                lightbox.style.display = 'block'; // Torna o lightbox visível
-                if (lightboxImg) lightboxImg.src = imgSrc; // Define a imagem a ser exibida no lightbox
-                if (lightboxImg) lightboxImg.alt = imgAlt; // Define o texto alt para acessibilidade
-                if (lightboxCaption) lightboxCaption.textContent = imgAlt; // Define a legenda do lightbox
+                lightbox.style.display = 'block';
+                if (lightboxImg) lightboxImg.src = imgSrc;
+                if (lightboxImg) lightboxImg.alt = imgAlt;
+                if (lightboxCaption) lightboxCaption.textContent = imgAlt;
             } else {
                 console.error('Erro: Elemento Lightbox não encontrado no DOM!');
             }
         });
     });
 
-    // Adiciona 'click' listener ao botão de fechar o lightbox
-    if (closeBtn) { // Adicionei verificação para garantir que o botão existe
+    if (closeBtn) {
         closeBtn.addEventListener('click', function() {
-            lightbox.style.display = 'none'; // Oculta o lightbox
+            lightbox.style.display = 'none';
         });
     }
 
-
-    // Adiciona 'click' listener ao fundo do lightbox para fechá-lo
-    if (lightbox) { // Adicionei verificação para garantir que o lightbox existe
+    if (lightbox) {
         lightbox.addEventListener('click', function(e) {
-            // Verifica se o clique foi no fundo (e não na imagem)
             if (e.target === lightbox) {
-                lightbox.style.display = 'none'; // Oculta o lightbox
+                lightbox.style.display = 'none';
             }
         });
     }
 
-
-    // Adiciona 'keydown' listener para fechar o lightbox com a tecla ESC
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && lightbox && lightbox.style.display === 'block') { // Adicionei verificação de lightbox
-            lightbox.style.display = 'none'; // Oculta o lightbox
+        if (e.key === 'Escape' && lightbox && lightbox.style.display === 'block') {
+            lightbox.style.display = 'none';
         }
     });
 
 
     // --- Lógica para Busca de Unidades por CEP ---
-    // Seleciona os elementos relacionados à busca de unidades
     const cepInput = document.getElementById('cep');
     const findUnitBtn = document.getElementById('find-unit-btn');
     const unitResultsDiv = document.getElementById('unit-results');
 
-    // Lista de unidades (seu "banco de dados" local)
     const unitsData = [{
             name: "Unidade Centro",
             address: "Rua Hermann Blumenau, 134 -Loja 1- Centro, Florianópolis - SC",
             cep: "88015-300",
             phone: "0800 323 3000",
-            mapLink: "https://maps.app.goo.gl/354vYc5tW1Xw2P3y7"
-        }, 
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Rua+Hermann+Blumenau,+134,+Florianopolis,+SC" // Link do Google Maps mais genérico
+        },
         {
             name: "Unidade Norte da Ilha",
             address: "Rua Intendente João Nunes Vieira,1006 - Sala 5 - Ingleses Norte, Florianópolis - SC",
             cep: "88058-100",
             phone: "0800 323 3000",
-            mapLink: "https://maps.app.goo.gl/nN6tQf8J7c5w4P3y7"
-        }, 
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Rua+Intendente+Joao+Nunes+Vieira,+1006,+Florianopolis,+SC" // Link do Google Maps mais genérico
+        },
         {
             name: "Unidade Campeche",
             address: "Av. Pequeno Príncipe,1455-sala 7- Campeche,Florianópolis - SC",
             cep: "88063-000",
             phone: "(48) 99613-2762",
-            mapLink: "https://maps.app.goo.gl/kM3hP7jL2a1b9T2u5"
-        }, 
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Av.+Pequeno+Principe,+1455,+Florianopolis,+SC" // Link do Google Maps mais genérico
+        },
     ];
 
-    // Função auxiliar para limpar e formatar o CEP (remover hífens e outros não-dígitos)
     function cleanAndFormatCep(cepString) {
         if (!cepString) {
             return '';
@@ -148,30 +128,21 @@ document.addEventListener('DOMContentLoaded', function() {
         return cepString.replace(/\D/g, '');
     }
 
-    // Adiciona 'click' listener ao botão de buscar unidade
-    if (findUnitBtn) { // Adicionei verificação de elemento
+    if (findUnitBtn) {
         findUnitBtn.addEventListener('click', function() {
-            // 1. Obtém o CEP digitado pelo usuário e o limpa/formata
             const cepDigitado = cleanAndFormatCep(cepInput.value);
+            let foundUnit = null;
 
-            let foundUnit = null; // Variável para armazenar a unidade encontrada
-
-            // 2. Itera sobre a lista de unidades para encontrar uma correspondência
             for (const unit of unitsData) {
-                // Limpa e formata o CEP da unidade para comparação
                 const unitCepClean = cleanAndFormatCep(unit.cep);
-
-                // Compara o CEP digitado com o CEP da unidade (ambos limpos)
                 if (unitCepClean === cepDigitado) {
-                    foundUnit = unit; // Encontrou a unidade
-                    break; // Sai do loop, pois já encontramos
+                    foundUnit = unit;
+                    break;
                 }
             }
 
-            // 3. Exibe o resultado na div 'unitResultsDiv'
-            if (unitResultsDiv) { // Adicionei verificação de elemento
+            if (unitResultsDiv) {
                 if (foundUnit) {
-                    // Se uma unidade foi encontrada, constrói o HTML para exibí-la
                     unitResultsDiv.innerHTML = `
                         <div class="unit-item">
                             <h3>${foundUnit.name}</h3>
@@ -182,7 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                 } else {
-                    // Se nenhuma unidade foi encontrada, exibe uma mensagem padrão
                     unitResultsDiv.innerHTML = `
                         <p>Nenhuma unidade encontrada para o CEP informado.</p>
                     `;
@@ -191,70 +161,85 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
-    // Opcional: Adicionar formatação automática do CEP no input (adiciona hífen)
-    // Isso é útil para o usuário, mas a lógica de busca ainda limpa o CEP para comparação.
-    if (cepInput) { // Adicionei verificação de elemento
+    if (cepInput) {
         cepInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            let value = e.target.value.replace(/\D/g, '');
             if (value.length > 5) {
                 value = value.substring(0, 5) + '-' + value.substring(5, 8);
             }
             e.target.value = value;
         });
     }
+
     // --- Lógica de Envio de Formulário com EmailJS ---
-const contactForm = document.querySelector('.contact-form-column form'); // Seleciona o formulário
+    const contactForm = document.querySelector('.contact-form-column form');
 
-if (contactForm) { // Verifica se o formulário existe
-    contactForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Impede o envio padrão do formulário (que recarregaria a página)
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-        console.log('Formulário de contato submetido!');
+            console.log('Formulário de contato submetido!');
 
-        // Captura os valores dos campos do formulário
-        const userName = document.getElementById('nome').value;
-        const userEmail = document.getElementById('email').value;
-        const message = document.getElementById('mensagem').value;
+            // Captura os valores dos campos do formulário
+            const userName = document.getElementById('nome').value;
+            const userEmail = document.getElementById('email').value;
+            const userMessage = document.getElementById('mensagem').value; // Use 'userMessage' para clareza
 
-        // Crie o objeto de parâmetros para o template do EmailJS
-        const templateParams = {
-            user_name: userName, // Este nome deve corresponder a {{user_name}} no seu template
-            user_email: userEmail, // Este nome deve corresponder a {{user_email}} no seu template
-            message: message // Este nome deve corresponder a {{message}} no seu template
-        };
-// 1. ENVIAR E-MAIL DE NOTIFICAÇÃO PARA VOCÊ
-        emailjs.send(
-            'mensagem',
-            'template_jk5qxpr',
-            commonTemplateParams
-        )
-        .then(function(response) {
-            console.log('E-mail de NOTIFICAÇÃO enviado com sucesso!', response.status, response.text);
+            // ATENÇÃO: As chaves neste objeto DEVEM CORRESPONDER EXATAMENTE aos placeholders {{...}} nos SEUS templates do EmailJS!
+            const templateParamsForNotification = {
+                user_name: userName,
+                user_email: userEmail,
+                message_content: userMessage // Nome da variável para o conteúdo da mensagem no template de NOTIFICAÇÃO
+            };
 
-            // 2. ENVIAR E-MAIL DE RESPOSTA AUTOMÁTICA PARA O CLIENTE
-            emailjs.send(
-                'mensagem',
-                'template_gnzn6uw',
-                {
-                    user_name: userName,    // O nome do cliente para o Olá {{user_name}}
-                    user_email: userEmail   // O e-mail do cliente para o "To Email" do template
-                }
-            )
-            .then(function(responseAuto) {
-                console.log('E-mail de RESPOSTA AUTOMÁTICA enviado com sucesso!', responseAuto.status, responseAuto.text);
-                alert('Sua mensagem foi enviada com sucesso! Você receberá uma confirmação por e-mail.');
-                contactForm.reset(); // Limpa o formulário após ambos os envios
-            }, function(errorAuto) {
-                console.error('Falha ao enviar e-mail de RESPOSTA AUTOMÁTICA:', errorAuto);
-                alert('Sua mensagem foi enviada, mas houve um erro ao enviar a confirmação. Por favor, entre em contato diretamente se não receber.');
-                contactForm.reset(); // Ainda limpa o formulário
-            });
+            // Os parâmetros para o template de resposta automática podem ser mais simples se o template for fixo
+            const templateParamsForAutoReply = {
+                user_name: userName,
+                user_email: userEmail
+            };
 
-        }, function(errorNotification) {
-            console.error('Falha ao enviar e-mail de NOTIFICAÇÃO:', errorNotification);
-            alert('Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.');
+            const SERVICE_ID = 'mensagem'; 
+            const NOTIFICATION_TEMPLATE_ID = 'template_jk5qxpr'; // ID do template de NOTIFICAÇÃO.
+            const AUTO_REPLY_TEMPLATE_ID = 'template_gnzn6uw'; // ID do template de RESPOSTA AUTOMÁTICA.
+
+
+            // 1. ENVIAR E-MAIL DE NOTIFICAÇÃO PARA VOCÊ (o primeiro que pode falhar)
+            emailjs.send(SERVICE_ID, NOTIFICATION_TEMPLATE_ID, templateParamsForNotification)
+                .then(function(response) {
+                    console.log('E-mail de NOTIFICAÇÃO enviado com sucesso!', response.status, response.text);
+
+                    // Se a notificação foi enviada com sucesso, tenta enviar a resposta automática
+                    return emailjs.send(SERVICE_ID, AUTO_REPLY_TEMPLATE_ID, templateParamsForAutoReply);
+                })
+                .then(function(responseAuto) {
+                    // Este bloco é executado se AMBOS os envios (notificação E resposta automática) foram um sucesso
+                    console.log('E-mail de RESPOSTA AUTOMÁTICA enviado com sucesso!', responseAuto.status, responseAuto.text);
+                    alert('Sua mensagem foi enviada com sucesso! Você receberá uma confirmação por e-mail.');
+                    contactForm.reset(); // Limpa o formulário após ambos os envios
+                })
+                .catch(function(error) {
+                    // Este bloco é executado se QUALQUER UM DOS ENVIOS falhou
+                    console.error('Ocorreu um erro no envio de e-mail:', error);
+
+                    let errorMessage = 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.';
+
+                    // Tente dar mais detalhes sobre o erro específico do EmailJS
+                    if (error && error.text) {
+                        errorMessage += '\nDetalhes do erro: ' + error.text;
+                    }
+
+                    // Verifica se o erro foi no primeiro envio ou no segundo
+                    if (error.status === 400) { // Erro 400: Bad Request
+                        errorMessage += '\nPor favor, verifique se os IDs de serviço/template e os nomes das variáveis nos seus templates do EmailJS estão corretos.';
+                    } else if (error.status === 401) { // Erro 401: Unauthorized (problema na Public Key ou serviço)
+                        errorMessage += '\nErro de autenticação. Verifique sua Public Key ou a conexão do seu serviço de e-mail no EmailJS.';
+                    } else if (error.status === 429) { // Erro 429: Too Many Requests (limite excedido)
+                         errorMessage += '\nLimite de envios do EmailJS excedido. Tente novamente mais tarde.';
+                    }
+
+                    alert(errorMessage);
+                    contactForm.reset(); // Ainda limpa o formulário, mesmo com erro
+                });
         });
-    });
-}
-});
+    }
+}); 
