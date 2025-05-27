@@ -6,10 +6,14 @@
     <title>Art Anik School</title>
     <link rel="shortcut icon" href="imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+        <script>
+                         (function(){
+                         emailjs.init("Rt5wDSGDdDjPdwP9a"); 
+                         })();
+         </script>
     </head>
 <body>
-    </div>
 
     <header>
         <div class="container">
@@ -184,13 +188,6 @@
                         </form>
                     </div>
 
-                   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-                    <script>
-                         (function(){
-                         emailjs.init("Rt5wDSGDdDjPdwP9a"); 
-                         })();
-                    </script>
-
                     <div class="contact-reviews-column">
                         <h3>O Que Nossos Alunos Dizem (Google)</h3>
                         <div class="google-review-item">
@@ -223,6 +220,19 @@
     <div id="lightbox-caption" class="lightbox-caption"></div>
 </div>
     </footer>
+    <script>
+    document.getElementById('form-contato')?.addEventListener('submit', function(event) {
+      event.preventDefault();
+      emailjs.sendForm('SEU_SERVICE_ID', 'SEU_TEMPLATE_ID', this)
+        .then(function(response) {
+          alert('Mensagem enviada com sucesso!');
+          document.getElementById('form-contato').reset();
+        }, function(error) {
+          alert('Ocorreu um erro ao enviar a mensagem. Tente novamente.');
+          console.error(error);
+        });
+    });
+  </script>
     <script src="script.js"></script>
 
 </body>
