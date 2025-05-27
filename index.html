@@ -183,12 +183,6 @@
                             <button type="submit" class="btn-submit">Enviar Mensagem</button>
                         </form>
                     </div>
-
-                    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-                    <script>
-                         (function(){
-                         emailjs.init("Rt5wDSGDdDjPdwP9a"); 
-                         })();
                     </script>
 
                     <div class="contact-reviews-column">
@@ -221,6 +215,11 @@
     <span class="close-btn">&times;</span>
     <img class="lightbox-content" id="lightbox-img" src="" alt="Imagem em destaque">
     <div id="lightbox-caption" class="lightbox-caption"></div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+                    <script>
+                         (function(){
+                         emailjs.init("Rt5wDSGDdDjPdwP9a"); 
+                         })();
 </div>
     </footer>
     <script src="script.js"></script>
