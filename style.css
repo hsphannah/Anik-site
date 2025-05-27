@@ -73,19 +73,24 @@ header {
     background-color: var(--white); /* Fundo branco */
     padding: 15px 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: sticky;
+    position: fixed;
+    width: 100%;
     top: 0;
+    left: 0;
     z-index: 1000;
+    transition: padding 0.3s ease, height 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.3s ease; /* Transição para o logo */
 }
 
 .logo img {
-    height: 200px; /* Ajuste o tamanho do logo */
+    height: 80px; /* Ajuste o tamanho do logo */
+    transition: height 0.3s ease;
 }
 
 nav ul {
@@ -101,13 +106,28 @@ nav ul li a {
     color: var(--medium-gray); /* Cinza para links de navegação */
     font-weight: bold;
     padding: 5px 0;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, font-size 0.3s ease; /* Adiciona transição para font-size */
 }
 
 nav ul li a:hover {
     color: var(--primary-red); /* Vermelho ao passar o mouse */
     text-decoration: none;
 }
+/* --- Estilos do Cabeçalho MINIMIZADO (adicionados quando a classe 'scrolled' está presente) --- */
+header.scrolled {
+    padding: 5px 0; /* Padding menor quando rolado */
+    background-color: var(--white); /* Pode manter o branco ou mudar para um cinza mais suave */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15); /* Sombra mais sutil ao encolher */
+}
+
+header.scrolled .logo img {
+    height: 45px; /* Tamanho menor do logo quando rolado */
+}
+
+header.scrolled nav ul li a {
+    font-size: 0.9em; /* Fonte um pouco menor */
+}
+
 
 /* Header Responsividade */
 @media (max-width: 768px) {
@@ -123,6 +143,17 @@ nav ul li a:hover {
 
     nav ul li {
         margin: 5px 0;
+    }
+}
+ /* Ajuste para o cabeçalho minimizado em mobile, se necessário */
+    header.scrolled .container {
+        /* Você pode querer ajustar a altura para mobile, se ficar muito apertado */
+        height: auto; /* Deixa a altura se ajustar ao conteúdo */
+        padding: 5px 0; /* Menos padding */
+    }
+
+    header.scrolled .logo img {
+        height: 40px; /* Ou um pouco menor para mobile minimizado */
     }
 }
 
@@ -190,9 +221,7 @@ section:nth-child(even) a:hover {
 /* Aplica uma margem superior invisível ao elemento que é o alvo de um scroll */
 /* Isso impede que o conteúdo seja escondido por cabeçalhos fixos */
 section[id] { /* Seleciona qualquer seção que tenha um ID (como #home, #cursos) */
-    scroll-margin-top: 150px; /* Altura do seu cabeçalho + um pouco de respiro */
-    /* Para telas menores, onde o cabeçalho pode ficar mais alto (se o logo ou nav mudar),
-       você pode ajustar isso em uma media query, se necessário. */
+    scroll-margin-top: 130px; 
 }
 
 /* --- Seção Sobre Nós --- */
