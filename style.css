@@ -25,6 +25,8 @@ body {
     line-height: 1.6;
     background-color: var(--light-gray); /* Fundo claro para o corpo */
     color: var(--dark-gray); /* Cor de texto principal */
+     /* Padding-top inicial para desktop e telas maiores */
+    padding-top: 130px; /* Baseado no logo de 80px + padding do header */
 }
 
 .container {
@@ -144,6 +146,23 @@ header.scrolled nav ul li a {
     nav ul li {
         margin: 5px 0;
     }
+     /* Padding para o cabeçalho no estado normal em mobile */
+    header {
+        padding: 10px 0; /* Um pouco menos de padding para mobile normal */
+    }
+
+    .logo img {
+        height: 60px; /* Logo um pouco menor no estado normal de mobile */
+    }
+
+    nav ul {
+        flex-direction: column;
+        margin-top: 10px; /* Espaço entre logo e nav */
+    }
+
+    nav ul li {
+        margin: 5px 0;
+    }
 }
  /* Ajuste para o cabeçalho minimizado em mobile, se necessário */
     header.scrolled .container {
@@ -155,8 +174,26 @@ header.scrolled nav ul li a {
     header.scrolled .logo img {
         height: 40px; /* Ou um pouco menor para mobile minimizado */
     }
+    header.scrolled nav {
+        /* Para esconder a navegação quando o cabeçalho estiver minimizado no mobile,
+           assim, apenas o logo aparece e o cabeçalho fica realmente pequeno. */
 }
 
+ /* **MUDANÇA CRUCIAL AQUI PARA O BODY PADDING-TOP EM MOBILE** */
+    body {
+        /* Calcule a altura do cabeçalho no estado normal de mobile:
+           Logo (60px) + (padding do header 10px em cima + 10px embaixo) + (margin-top da nav 10px) = 90px.
+           Adicione uma folga, por exemplo, 100px. */
+        padding-top: 100px;
+    }
+
+    /* **MUDANÇA CRUCIAL AQUI PARA O SCROLL-MARGIN-TOP EM MOBILE** */
+    section[id] {
+        /* A altura do cabeçalho minimizado no mobile é:
+           Logo (40px) + (padding do header 5px em cima + 5px embaixo) = 50px
+           Adicione uma folga: 70px. */
+        scroll-margin-top: 70px;
+    }
 
 /* --- Hero Section (Destaque) --- */
 .hero {
