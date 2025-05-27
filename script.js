@@ -91,6 +91,24 @@ document.addEventListener('DOMContentLoaded', function() {
             lightbox.style.display = 'none';
         }
     });
+    
+    // --- Lógica para o Header Fixo/Minimizado ao Rolar ---
+    const header = document.querySelector('header');
+    
+    // Verifica se o elemento header existe para evitar erros
+    if (header) {
+        window.addEventListener('scroll', function() {
+            // Se a página for rolada mais de 100px (ou outro valor que você preferir)
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        console.log('Scroll listener added for header.');
+    } else {
+        console.warn('Header element not found. Scroll functionality for header will not work.');
+    }
 
 
     // --- Lógica para Busca de Unidades por CEP ---
