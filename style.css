@@ -132,35 +132,121 @@ header.scrolled nav ul li a {
 }
 
 
-/* Header Responsividade */
+/* --- ESTILOS DO MENU HAMBÚRGUER (Adicione antes da seção de responsividade) --- */
+
+/* O botão hambúrguer fica escondido por padrão em telas grandes */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-direction: column;
+  gap: 5px; /* Espaço entre as barras */
+  z-index: 1001; /* Garante que fique acima do menu que vai deslizar */
+}
+
+/* Estilo das 3 barrinhas dentro do botão */
+.hamburger-btn .bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: var(--dark-gray);
+  transition: all 0.3s ease-in-out;
+}
+
+
+/* --- Header Responsividade (NOVA VERSÃO COM MENU HAMBÚRGUER) --- */
 @media (max-width: 768px) {
-    /* Estilos do header no estado NORMAL (não rolado) em mobile */
-    header {
-        padding: 10px 0; /* Um pouco menos de padding para mobile normal */
-    }
 
-    header .container {
-        flex-direction: column; /* Itens do cabeçalho empilhados */
-        text-align: center;
-    }
+  /* 1. AJUSTE NO CONTAINER DO HEADER */
+  header .container {
+    /* Mantemos o layout em linha, para o logo e o botão ficarem lado a lado */
+    flex-direction: row; 
+    justify-content: space-between; /* Garante logo na esquerda e botão na direita */
+  }
 
-    .logo img {
-        height: 60px; /* Logo um pouco menor no estado normal de mobile */
-    }
+  /* 2. MOSTRAR O BOTÃO HAMBÚRGUER */
+  .hamburger-btn {
+    display: flex; /* Agora o botão aparece em telas menores */
+  }
 
-    nav { /* Aplica estilos diretamente na tag nav para melhor controle */
-        width: 100%; /* Garante que a nav ocupe a largura completa para centralizar */
-        margin-top: 10px; /* Espaço entre logo e nav */
-    }
+  /* 3. ESTILO DO PAINEL DE NAVEGAÇÃO MOBILE */
+  nav {
+    /* O menu começa fora da tela, à direita */
+    position: fixed;
+    top: 0;
+    right: -100%; 
+    width: 70%; /* Ocupa 70% da largura da tela */
+    max-width: 320px; /* Largura máxima para não ficar gigante em tablets */
+    height: 100vh; /* Altura total da tela */
+    
+    /* Estilo visual do painel */
+    background-color: var(--dark-gray); 
+    padding-top: 6rem; /* Espaço no topo para não colar os links */
+    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
 
-    nav ul {
-        flex-direction: column; /* Links de navegação empilhados */
-        margin-top: 0; /* A margem já está na nav */
-    }
+    /* Animação de entrada e saída */
+    transition: right 0.4s ease-in-out;
+  }
 
-    nav ul li {
-        margin: 5px 0; /* Espaçamento entre os links */
-    }
+  /* 4. ESTADO ATIVO DO MENU (QUANDO O JS ADICIONA A CLASSE 'active') */
+  nav.active {
+    right: 0; /* Move o menu para a tela */
+  }
+
+  /* 5. ESTILO DOS LINKS DENTRO DO PAINEL MOBILE */
+  nav ul {
+    flex-direction: column; /* Links empilhados na vertical */
+    align-items: center; /* Centraliza os links no painel */
+    width: 100%;
+    gap: 1.5rem; /* Espaçamento entre os links */
+  }
+
+  nav ul li {
+    margin-left: 0; /* Remove a margem da versão desktop */
+    width: 100%;
+    text-align: center;
+  }
+
+  nav ul li a {
+    color: var(--white); /* Links brancos para contraste */
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 10px 0;
+    display: block; /* Faz o link ocupar toda a largura do <li> */
+  }
+
+  nav ul li a:hover {
+    color: var(--white);
+    background-color: var(--primary-red); /* Fundo vermelho no hover */
+  }
+
+  /* 6. AJUSTE NO PADDING DO BODY E SCROLL */
+  
+  /* A altura do cabeçalho agora é fixa, então podemos usar um padding menor */
+  body {
+    padding-top: 80px; /* Altura do header: logo (60px) + padding (2*10px) */
+  }
+
+  header {
+    padding: 10px 0;
+  }
+
+  .logo img {
+    height: 60px; /* Tamanho fixo do logo no mobile */
+  }
+
+  /* Remove o comportamento de esconder a nav com scroll, pois o botão faz isso */
+  header.scrolled nav {
+    display: block; /* Garante que o CSS do menu hambúrguer sempre se aplique */
+  }
+  
+  /* Ajusta o ponto de parada da âncora para a altura do cabeçalho mobile */
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+}
 
     /* **MUDANÇA CRUCIAL AQUI PARA O BODY PADDING-TOP EM MOBILE** */
     body {
@@ -192,7 +278,6 @@ header.scrolled nav ul li a {
            Adicione uma folga: 70px. */
         scroll-margin-top: 70px; /* AJUSTE ESTE VALOR APÓS TESTAR */
     }
-}
 
 
 /* --- Hero Section (Destaque) --- */
@@ -753,4 +838,17 @@ footer .social-links a {
 footer .social-links a:hover {
     color: var(--primary-red); /* Vermelho ao passar o mouse */
     text-decoration: none;
+}
+
+/* CORREÇÃO FINAL DO MENU HAMBÚRGUER AO ROLAR      */
+@media (max-width: 768px) {
+  /*
+    Esta regra FORÇA a navegação a ser sempre um bloco visível
+    (mesmo que fora da tela), impedindo que a classe 'scrolled' 
+    a esconda com 'display: none'.
+    O !important garante que esta regra vença qualquer conflito.
+  */
+  header.scrolled nav {
+    display: block !important;
+  }
 }

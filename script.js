@@ -95,21 +95,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Lógica para o Header Fixo/Minimizado ao Rolar ---
     const header = document.querySelector('header');
     
-    // Verifica se o elemento header existe para evitar erros
     if (header) {
         window.addEventListener('scroll', function() {
-            // Se a página for rolada mais de 100px (ou outro valor que você preferir)
             if (window.scrollY > 100) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
         });
-        console.log('Scroll listener added for header.');
-    } else {
-        console.warn('Header element not found. Scroll functionality for header will not work.');
     }
 
+   
+    // --- LÓGICA DO MENU HAMBÚRGUER (NOVO CÓDIGO ADICIONADO) ---
+ 
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    const nav = document.querySelector('header nav');
+    const navLinks = document.querySelectorAll('header nav a'); // Pega todos os links do menu
+
+    if (hamburgerBtn && nav) {
+        // Evento para ABRIR/FECHAR o menu ao clicar no botão
+        hamburgerBtn.addEventListener('click', function() {
+            nav.classList.toggle('active');
+        });
+
+        // Evento para FECHAR o menu ao clicar em um dos links
+        // (Melhora a experiência do usuário em páginas de uma só tela)
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                nav.classList.remove('active');
+            });
+        });
+    }
 
     // --- Exibição Direta das Unidades com Links do Mapa ---
     const unitListDiv = document.getElementById('unit-list');
