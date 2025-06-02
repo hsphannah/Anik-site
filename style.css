@@ -507,57 +507,24 @@ section[id] { /* Seleciona qualquer seção que tenha um ID (como #home, #cursos
 /* --- Seção de Unidades --- */
 .units {
     background-color: var(--light-gray); /* Um cinza claro para a seção */
-    text-align: center;
+    text-align: center; /* Centraliza o título e o parágrafo da seção */
 }
 
-.cep-search {
-    max-width: 500px;
-    margin: 30px auto;
-    display: flex; /* Para alinhar input e botão na mesma linha */
-    gap: 15px; /* Espaçamento entre o campo e o botão */
-    align-items: flex-end; /* Alinha o botão com o campo de texto */
-}
-
-.cep-search .form-group {
-    flex-grow: 1; /* Faz o campo de CEP ocupar o máximo de espaço disponível */
-    margin-bottom: 0; /* Remove a margem padrão do form-group aqui */
-    text-align: left; /* Alinha o label à esquerda */
-}
-
-.cep-search input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-gray);
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-.cep-search .btn-cta {
-    padding: 12px 25px; /* Ajusta o padding para combinar com o input */
-    flex-shrink: 0; /* Previne que o botão encolha */
-    height: 45px; /* Altura para alinhar com o input */
-    line-height: 1; /* Ajusta o texto do botão */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.unit-results {
+.unit-list { /* Novo estilo para o contêiner das unidades */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 2 ou 3 colunas em telas maiores */
+    gap: 25px; /* Espaço entre os itens das unidades */
     margin-top: 40px;
-    text-align: left; /* Alinha os resultados à esquerda */
+    text-align: left; /* Garante que o texto dentro dos itens fique alinhado à esquerda */
 }
 
-.unit-results p {
-    font-style: italic;
-    color: var(--medium-gray);
-}
-
+/* Os estilos .unit-item que você já tem permanecem os mesmos: */
 .unit-item {
     background-color: var(--white);
     border: 1px solid var(--border-gray);
     border-radius: 8px;
     padding: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 0; /* Removido, pois o gap do grid já cuida disso */
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
@@ -574,15 +541,10 @@ section[id] { /* Seleciona qualquer seção que tenha um ID (como #home, #cursos
     margin-top: 15px;
 }
 
-/* Seção de Unidades Responsividade */
-@media (max-width: 600px) {
-    .cep-search {
-        flex-direction: column; /* Empilha input e botão em telas menores */
-        align-items: stretch; /* Estica os itens para a largura total */
-    }
-
-    .cep-search .btn-cta {
-        width: 100%; /* Botão ocupa 100% da largura */
+/* Responsividade para a lista de unidades */
+@media (max-width: 768px) {
+    .unit-list {
+        grid-template-columns: 1fr; /* Uma coluna em telas menores */
     }
 }
 
