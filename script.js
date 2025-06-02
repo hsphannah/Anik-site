@@ -2,34 +2,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded. Script start.');
 
-    // --- Lógica do Menu Hambúrguer ---
-    const hamburgerBtn = document.querySelector('.hamburger-menu');
-    const mainNav = document.querySelector('.main-nav'); // Certifique-se de que sua tag <nav> no HTML tem a classe 'main-nav'
-    const navLinks = document.querySelectorAll('.main-nav ul li a'); // Seleciona todos os links da navegação
-
-    if (hamburgerBtn && mainNav) {
-        hamburgerBtn.addEventListener('click', function() {
-            hamburgerBtn.classList.toggle('active');
-            mainNav.classList.toggle('active');
-            // Impede o scroll do body quando o menu está aberto
-            document.body.classList.toggle('no-scroll');
-        });
-
-        // Fecha o menu ao clicar em um link (útil para navegação de âncora)
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                hamburgerBtn.classList.remove('active');
-                mainNav.classList.remove('active');
-                document.body.classList.remove('no-scroll');
-            });
-        });
-
-        console.log('Hamburger menu logic added.');
-    } else {
-        console.warn('Hamburger menu or main navigation not found. Mobile menu functionality will not work.');
-    }
-
-
     // --- Lógica da Galeria e Filtros ---
     const filterButtons = document.querySelectorAll('.filter-btn');
     const galleryItems = document.querySelectorAll('.gallery-item');
@@ -111,3 +83,148 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.target === lightbox) {
                 lightbox.style.display = 'none';
             }
+        });
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox && lightbox.style.display === 'block') {
+            lightbox.style.display = 'none';
+        }
+    });
+    
+    // --- Lógica para o Header Fixo/Minimizado ao Rolar ---
+    const header = document.querySelector('header');
+    
+    // Verifica se o elemento header existe para evitar erros
+    if (header) {
+        window.addEventListener('scroll', function() {
+            // Se a página for rolada mais de 100px (ou outro valor que você preferir)
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        console.log('Scroll listener added for header.');
+    } else {
+        console.warn('Header element not found. Scroll functionality for header will not work.');
+    }
+
+
+    // --- Exibição Direta das Unidades com Links do Mapa ---
+    const unitListDiv = document.getElementById('unit-list');
+
+    const unitsData = [
+        {
+            name: "Unidade Centro",
+            address: "Rua Hermann Blumenau, 134 -Loja 1- Centro, Florianópolis - SC",
+            phone: "0800 323 3000",
+            // IMPORTANTE: Usei um link geral para a busca no Google Maps.
+            // Para um link mais preciso, você pode ir no Google Maps, pesquisar seu endereço exato,
+            // e depois usar o botão "Compartilhar" para copiar o link.
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Rua+Hermann+Blumenau,+134,+Centro,+Florianópolis,+SC"
+        },
+        {
+            name: "Unidade Norte da Ilha",
+            address: "Rua Intendente João Nunes Vieira,1006 - Sala 5 - Ingleses Norte, Florianópolis - SC",
+            phone: "0800 323 3000",
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Rua+Intendente+João+Nunes+Vieira,+1006,+Sala+5,+Ingleses+Norte,+Florianópolis,+SC"
+        },
+        {
+            name: "Unidade Campeche",
+            address: "Av. Pequeno Príncipe,1455-sala 7- Campeche,Florianópolis - SC",
+            phone: "(48) 99613-2762",
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Av.+Pequeno+Príncipe,+1455,+sala+7,+Campeche,+Florianópolis,+SC"
+        },
+    ];
+
+    if (unitListDiv) {
+        let unitsHTML = '';
+        unitsData.forEach(unit => {
+            unitsHTML += `
+                <div class="unit-item">
+                    <h3>${unit.name}</h3>
+                    <p><strong>Endereço:</strong> ${unit.address}</p>
+                    <p><strong>Telefone:</strong> ${unit.phone}</p>
+                    <p><a href="${unit.mapLink}" target="_blank" class="btn-saiba-mais">Ver no Mapa</a></p>
+                </div>
+            `;
+        });
+        unitListDiv.innerHTML = unitsHTML;
+        console.log('Unidades carregadas na seção.');
+    } else {
+        console.warn('Elemento unit-list não encontrado. As unidades não serão exibidas.');
+    }
+
+    // --- Lógica de Envio de Formulário com EmailJS ---
+    const contactForm = document.querySelector('.contact-form-column form');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            console.log('Formulário de contato submetido!');
+
+            // Captura os valores dos campos do formulário
+            const userName = document.getElementById('nome').value;
+            const userEmail = document.getElementById('email').value;
+            const userMessage = document.getElementById('mensagem').value; // Use 'userMessage' para clareza
+
+            // ATENÇÃO: As chaves neste objeto DEVEM CORRESPONDER EXATAMENTE aos placeholders {{...}} nos SEUS templates do EmailJS!
+            const templateParamsForNotification = {
+                user_name: userName,
+                user_email: userEmail,
+                message_content: userMessage // Nome da variável para o conteúdo da mensagem no template de NOTIFICAÇÃO
+            };
+
+            // Os parâmetros para o template de resposta automática podem ser mais simples se o template for fixo
+            const templateParamsForAutoReply = {
+                user_name: userName,
+                user_email: userEmail
+            };
+
+            const SERVICE_ID = 'mensagem'; 
+            const NOTIFICATION_TEMPLATE_ID = 'template_jk5qxpr'; // ID do template de NOTIFICAÇÃO.
+            const AUTO_REPLY_TEMPLATE_ID = 'template_gnzn6uw'; // ID do template de RESPOSTA AUTOMÁTICA.
+
+
+            // 1. ENVIAR E-MAIL DE NOTIFICAÇÃO PARA VOCÊ (o primeiro que pode falhar)
+            emailjs.send(SERVICE_ID, NOTIFICATION_TEMPLATE_ID, templateParamsForNotification)
+                .then(function(response) {
+                    console.log('E-mail de NOTIFICAÇÃO enviado com sucesso!', response.status, response.text);
+
+                    // Se a notificação foi enviada com sucesso, tenta enviar a resposta automática
+                    return emailjs.send(SERVICE_ID, AUTO_REPLY_TEMPLATE_ID, templateParamsForAutoReply);
+                })
+                .then(function(responseAuto) {
+                    // Este bloco é executado se AMBOS os envios (notificação E resposta automática) foram um sucesso
+                    console.log('E-mail de RESPOSTA AUTOMÁTICA enviado com sucesso!', responseAuto.status, responseAuto.text);
+                    alert('Sua mensagem foi enviada com sucesso! Você receberá uma confirmação por e-mail.');
+                    contactForm.reset(); // Limpa o formulário após ambos os envios
+                })
+                .catch(function(error) {
+                    // Este bloco é executado se QUALQUER UM DOS ENVIOS falhou
+                    console.error('Ocorreu um erro no envio de e-mail:', error);
+
+                    let errorMessage = 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.';
+
+                    // Tente dar mais detalhes sobre o erro específico do EmailJS
+                    if (error && error.text) {
+                        errorMessage += '\nDetalhes do erro: ' + error.text;
+                    }
+
+                    // Verifica se o erro foi no primeiro envio ou no segundo
+                    if (error.status === 400) { // Erro 400: Bad Request
+                        errorMessage += '\nPor favor, verifique se os IDs de serviço/template e os nomes das variáveis nos seus templates do EmailJS estão corretos.';
+                    } else if (error.status === 401) { // Erro 401: Unauthorized (problema na Public Key ou serviço)
+                        errorMessage += '\nErro de autenticação. Verifique sua Public Key ou a conexão do seu serviço de e-mail no EmailJS.';
+                    } else if (error.status === 429) { // Erro 429: Too Many Requests (limite excedido)
+                         errorMessage += '\nLimite de envios do EmailJS excedido. Tente novamente mais tarde.';
+                    }
+
+                    alert(errorMessage);
+                    contactForm.reset(); // Ainda limpa o formulário, mesmo com erro
+                });
+        });
+    }
+}); 
