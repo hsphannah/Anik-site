@@ -95,98 +95,81 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Lógica para o Header Fixo/Minimizado ao Rolar ---
     const header = document.querySelector('header');
     
-    // Verifica se o elemento header existe para evitar erros
     if (header) {
         window.addEventListener('scroll', function() {
-            // Se a página for rolada mais de 100px (ou outro valor que você preferir)
             if (window.scrollY > 100) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
         });
-        console.log('Scroll listener added for header.');
-    } else {
-        console.warn('Header element not found. Scroll functionality for header will not work.');
     }
 
+   
+    // --- LÓGICA DO MENU HAMBÚRGUER (NOVO CÓDIGO ADICIONADO) ---
+ 
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    const nav = document.querySelector('header nav');
+    const navLinks = document.querySelectorAll('header nav a'); // Pega todos os links do menu
 
-    // --- Lógica para Busca de Unidades por CEP ---
-    const cepInput = document.getElementById('cep');
-    const findUnitBtn = document.getElementById('find-unit-btn');
-    const unitResultsDiv = document.getElementById('unit-results');
+    if (hamburgerBtn && nav) {
+        // Evento para ABRIR/FECHAR o menu ao clicar no botão
+        hamburgerBtn.addEventListener('click', function() {
+            nav.classList.toggle('active');
+        });
 
-    const unitsData = [{
+        // Evento para FECHAR o menu ao clicar em um dos links
+        // (Melhora a experiência do usuário em páginas de uma só tela)
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                nav.classList.remove('active');
+            });
+        });
+    }
+
+    // --- Exibição Direta das Unidades com Links do Mapa ---
+    const unitListDiv = document.getElementById('unit-list');
+
+    const unitsData = [
+        {
             name: "Unidade Centro",
             address: "Rua Hermann Blumenau, 134 -Loja 1- Centro, Florianópolis - SC",
-            cep: "88015-300",
             phone: "0800 323 3000",
-            mapLink: "https://www.google.com/maps/search/?api=1&query=Rua+Hermann+Blumenau,+134,+Florianopolis,+SC" // Link do Google Maps mais genérico
+            // IMPORTANTE: Usei um link geral para a busca no Google Maps.
+            // Para um link mais preciso, você pode ir no Google Maps, pesquisar seu endereço exato,
+            // e depois usar o botão "Compartilhar" para copiar o link.
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Rua+Hermann+Blumenau,+134,+Centro,+Florianópolis,+SC"
         },
         {
             name: "Unidade Norte da Ilha",
             address: "Rua Intendente João Nunes Vieira,1006 - Sala 5 - Ingleses Norte, Florianópolis - SC",
-            cep: "88058-100",
             phone: "0800 323 3000",
-            mapLink: "https://www.google.com/maps/search/?api=1&query=Rua+Intendente+Joao+Nunes+Vieira,+1006,+Florianopolis,+SC" // Link do Google Maps mais genérico
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Rua+Intendente+João+Nunes+Vieira,+1006,+Sala+5,+Ingleses+Norte,+Florianópolis,+SC"
         },
         {
             name: "Unidade Campeche",
             address: "Av. Pequeno Príncipe,1455-sala 7- Campeche,Florianópolis - SC",
-            cep: "88063-000",
             phone: "(48) 99613-2762",
-            mapLink: "https://www.google.com/maps/search/?api=1&query=Av.+Pequeno+Principe,+1455,+Florianopolis,+SC" // Link do Google Maps mais genérico
+            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Av.+Pequeno+Príncipe,+1455,+sala+7,+Campeche,+Florianópolis,+SC"
         },
     ];
 
-    function cleanAndFormatCep(cepString) {
-        if (!cepString) {
-            return '';
-        }
-        return cepString.replace(/\D/g, '');
-    }
-
-    if (findUnitBtn) {
-        findUnitBtn.addEventListener('click', function() {
-            const cepDigitado = cleanAndFormatCep(cepInput.value);
-            let foundUnit = null;
-
-            for (const unit of unitsData) {
-                const unitCepClean = cleanAndFormatCep(unit.cep);
-                if (unitCepClean === cepDigitado) {
-                    foundUnit = unit;
-                    break;
-                }
-            }
-
-            if (unitResultsDiv) {
-                if (foundUnit) {
-                    unitResultsDiv.innerHTML = `
-                        <div class="unit-item">
-                            <h3>${foundUnit.name}</h3>
-                            <p><strong>Endereço:</strong> ${foundUnit.address}</p>
-                            <p><strong>CEP:</strong> ${foundUnit.cep}</p>
-                            <p><strong>Telefone:</strong> ${foundUnit.phone}</p>
-                            <p><a href="${foundUnit.mapLink}" target="_blank" class="btn-saiba-mais">Ver no Mapa</a></p>
-                        </div>
-                    `;
-                } else {
-                    unitResultsDiv.innerHTML = `
-                        <p>Nenhuma unidade encontrada para o CEP informado.</p>
-                    `;
-                }
-            }
+    if (unitListDiv) {
+        let unitsHTML = '';
+        unitsData.forEach(unit => {
+            unitsHTML += `
+                <div class="unit-item">
+                    <h3>${unit.name}</h3>
+                    <p><strong>Endereço:</strong> ${unit.address}</p>
+                    <p><strong>Telefone:</strong> ${unit.phone}</p>
+                    <p><a href="${unit.mapLink}" target="_blank" class="btn-saiba-mais">Ver no Mapa</a></p>
+                </div>
+            `;
         });
-    }
-
-    if (cepInput) {
-        cepInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 5) {
-                value = value.substring(0, 5) + '-' + value.substring(5, 8);
-            }
-            e.target.value = value;
-        });
+        unitListDiv.innerHTML = unitsHTML;
+        console.log('Unidades carregadas na seção.');
+    } else {
+        console.warn('Elemento unit-list não encontrado. As unidades não serão exibidas.');
     }
 
     // --- Lógica de Envio de Formulário com EmailJS ---
