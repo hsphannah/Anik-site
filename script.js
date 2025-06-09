@@ -224,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         state: "sc",
                         neighborhood: "campeche"
                     },
-                    // Adicione mais unidades aqui se tiver, sempre com city, state e neighborhood (em minúsculas)
                 ];
 
                 // Prioridade de busca: 1. Bairro, 2. Cidade, 3. Estado
@@ -379,4 +378,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
         });
     }
+    
 }); 
