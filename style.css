@@ -589,49 +589,83 @@ section[id] { /* Seleciona qualquer seção que tenha um ID (como #home, #cursos
     }
 }
 
-/* --- Seção de Unidades --- */
-.units {
-    background-color: var(--light-gray); /* Um cinza claro para a seção */
-    text-align: center; /* Centraliza o título e o parágrafo da seção */
-}
-
-.unit-list { /* Novo estilo para o contêiner das unidades */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 2 ou 3 colunas em telas maiores */
-    gap: 25px; /* Espaço entre os itens das unidades */
-    margin-top: 40px;
-    text-align: left; /* Garante que o texto dentro dos itens fique alinhado à esquerda */
-}
-
-/* Os estilos .unit-item que você já tem permanecem os mesmos: */
-.unit-item {
-    background-color: var(--white);
-    border: 1px solid var(--border-gray);
+/* --- Seção Encontrar Unidade --- */
+.cep-search-container {
+    background-color: var(--light-gray);
+    padding: 30px;
     border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 0; /* Removido, pois o gap do grid já cuida disso */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    text-align: center;
+    margin-top: 30px;
+    max-width: 600px; /* Limita a largura para melhor visualização */
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.unit-item h3 {
-    color: var(--primary-red); /* Vermelho da sua paleta */
+.cep-search-container input[type="text"] {
+    width: calc(100% - 120px); /* Ajusta para deixar espaço para o botão */
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-gray);
+    border-radius: 5px;
+    font-size: 1em;
+    vertical-align: middle; /* Alinha com o botão */
+    box-sizing: border-box; /* Garante que padding e border não aumentem a largura total */
+}
+
+.cep-search-container button {
+    padding: 12px 20px;
+    font-size: 1em;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.error-message {
+    color: var(--primary-red);
+    font-weight: bold;
+    margin-top: -10px; /* Sobe um pouco para ficar mais perto do input */
+    margin-bottom: 15px;
+}
+
+#unitResults {
+    margin-top: 25px;
+    text-align: left;
+    border-top: 1px solid var(--border-gray);
+    padding-top: 20px;
+}
+
+#unitResults h3 {
+    color: var(--primary-red);
     margin-bottom: 10px;
 }
 
-.unit-item p {
-    margin-bottom: 5px;
+#unitResults .unit-item {
+    background-color: var(--white);
+    border: 1px solid var(--border-gray);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.unit-item .btn-saiba-mais {
-    margin-top: 15px;
+#unitResults .unit-item p {
+    margin: 5px 0;
 }
 
-/* Responsividade para a lista de unidades */
-@media (max-width: 768px) {
-    .unit-list {
-        grid-template-columns: 1fr; /* Uma coluna em telas menores */
+/* Responsividade para o campo de CEP */
+@media (max-width: 600px) {
+    .cep-search-container input[type="text"] {
+        width: 100%; /* Ocupa toda a largura em telas menores */
+        margin-right: 0;
+        margin-bottom: 15px; /* Espaço abaixo do input */
+    }
+
+    .cep-search-container button {
+        width: 100%; /* Botão ocupa toda a largura */
+        margin-left: 0;
     }
 }
+
 
 
 /* --- Formulário de Contato e Avaliações --- */

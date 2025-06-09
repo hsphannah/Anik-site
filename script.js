@@ -127,49 +127,185 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Exibição Direta das Unidades com Links do Mapa ---
-    const unitListDiv = document.getElementById('unit-list');
+     // --- Pesquisador de CEP e Localizador de Unidade ---
+    const cepInput = document.getElementById('cepInput');
+    const searchCepBtn = document.getElementById('searchCepBtn');
+    const cepErrorDiv = document.getElementById('cepError');
+    const unitResultsDiv = document.getElementById('unitResults');
 
-    const unitsData = [
-        {
-            name: "Unidade Centro",
-            address: "Rua Hermann Blumenau, 134 -Loja 1- Centro, Florianópolis - SC",
-            phone: "0800 323 3000",
-            // IMPORTANTE: Usei um link geral para a busca no Google Maps.
-            // Para um link mais preciso, você pode ir no Google Maps, pesquisar seu endereço exato,
-            // e depois usar o botão "Compartilhar" para copiar o link.
-            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Rua+Hermann+Blumenau,+134,+Centro,+Florianópolis,+SC"
-        },
-        {
-            name: "Unidade Norte da Ilha",
-            address: "Rua Intendente João Nunes Vieira,1006 - Sala 5 - Ingleses Norte, Florianópolis - SC",
-            phone: "0800 323 3000",
-            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Rua+Intendente+João+Nunes+Vieira,+1006,+Sala+5,+Ingleses+Norte,+Florianópolis,+SC"
-        },
-        {
-            name: "Unidade Campeche",
-            address: "Av. Pequeno Príncipe,1455-sala 7- Campeche,Florianópolis - SC",
-            phone: "(48) 99613-2762",
-            mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Av.+Pequeno+Príncipe,+1455,+sala+7,+Campeche,+Florianópolis,+SC"
-        },
-    ];
+    // Funções auxiliares para exibir mensagens
+    function showCepError(message) {
+        cepErrorDiv.textContent = message;
+        cepErrorDiv.style.display = 'block';
+    }
 
-    if (unitListDiv) {
-        let unitsHTML = '';
-        unitsData.forEach(unit => {
-            unitsHTML += `
-                <div class="unit-item">
-                    <h3>${unit.name}</h3>
-                    <p><strong>Endereço:</strong> ${unit.address}</p>
-                    <p><strong>Telefone:</strong> ${unit.phone}</p>
-                    <p><a href="${unit.mapLink}" target="_blank" class="btn-saiba-mais">Ver no Mapa</a></p>
-                </div>
-            `;
+    function hideCepError() {
+        cepErrorDiv.textContent = '';
+        cepErrorDiv.style.display = 'none';
+    }
+
+    function clearUnitResults() {
+        unitResultsDiv.innerHTML = '';
+    }
+
+    // Adiciona máscara de CEP (formato 00000-000)
+    if (cepInput) {
+        cepInput.addEventListener('input', function(e) {
+            let cep = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            if (cep.length > 5) {
+                cep = cep.substring(0, 5) + '-' + cep.substring(5, 8);
+            }
+            e.target.value = cep;
         });
-        unitListDiv.innerHTML = unitsHTML;
-        console.log('Unidades carregadas na seção.');
-    } else {
-        console.warn('Elemento unit-list não encontrado. As unidades não serão exibidas.');
+    }
+
+    if (searchCepBtn) {
+        searchCepBtn.addEventListener('click', async function() {
+            hideCepError();
+            clearUnitResults();
+            const cep = cepInput.value.replace(/\D/g, ''); // Limpa o CEP (somente dígitos)
+
+            if (cep.length !== 8) {
+                showCepError('Por favor, digite um CEP válido com 8 dígitos.');
+                return;
+            }
+
+            // Desabilita o botão e mostra feedback
+            searchCepBtn.textContent = 'Buscando...';
+            searchCepBtn.disabled = true;
+
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await response.json();
+
+                // Check for API specific error (e.g., CEP not found by ViaCEP)
+                if (data.erro) {
+                    showCepError('CEP não encontrado ou inválido pela base de dados.');
+                    return; // Stop execution if ViaCEP reports an error
+                }
+
+                console.log('Dados do CEP obtidos:', data); // Log para depuração
+
+                // Normaliza os dados do CEP para comparação (sempre para minúsculas)
+                const cepCity = data.localidade.toLowerCase();
+                const cepState = data.uf.toLowerCase();
+                // O bairro pode ser nulo ou vazio em alguns CEPs, então garantimos que seja string vazia
+                const cepNeighborhood = data.bairro ? data.bairro.toLowerCase() : '';
+
+                let foundUnits = [];
+                let messageHeader = ''; // Para exibir a mensagem correta ao usuário
+
+                // Reutiliza os dados de unidades que você já tem, garantindo que tenham city, state e neighborhood
+                const unitsData = [
+                    {
+                        name: "Unidade Centro",
+                        address: "Rua Hermann Blumenau, 134 -Loja 1- Centro, Florianópolis - SC",
+                        phone: "0800 323 3000",
+                        mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Rua+Hermann+Blumenau,+134,+Centro,+Florianópolis,+SC",
+                        city: "florianópolis",
+                        state: "sc",
+                        neighborhood: "centro"
+                    },
+                    {
+                        name: "Unidade Norte da Ilha",
+                        address: "Rua Intendente João Nunes Vieira,1006 - Sala 5 - Ingleses Norte, Florianópolis - SC",
+                        phone: "0800 323 3000",
+                        mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Rua+Intendente+João+Nunes+Vieira,+1006,+Sala+5,+Ingleses+Norte,+Florianópolis,+SC",
+                        city: "florianópolis",
+                        state: "sc",
+                        neighborhood: "ingleses norte"
+                    },
+                    {
+                        name: "Unidade Campeche",
+                        address: "Av. Pequeno Príncipe,1455-sala 7- Campeche,Florianópolis - SC",
+                        phone: "(48) 99613-2762",
+                        mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Av.+Pequeno+Príncipe,+1455,+sala+7,+Campeche,+Florianópolis,+SC",
+                        city: "florianópolis",
+                        state: "sc",
+                        neighborhood: "campeche"
+                    },
+                    // Adicione mais unidades aqui se tiver, sempre com city, state e neighborhood (em minúsculas)
+                ];
+
+                // Prioridade de busca: 1. Bairro, 2. Cidade, 3. Estado
+                // Se encontrar por bairro, mostra só aquela(s). Se não, busca por cidade. Se não, por estado.
+                
+                // Tenta encontrar por bairro (se o bairro do CEP não for vazio)
+                if (cepNeighborhood) { // Só tenta comparar por bairro se o bairro do CEP não for vazio
+                    const unitsByNeighborhood = unitsData.filter(unit => 
+                        unit.city === cepCity && unit.state === cepState && unit.neighborhood === cepNeighborhood
+                    );
+                    if (unitsByNeighborhood.length > 0) {
+                        foundUnits = unitsByNeighborhood;
+                        messageHeader = `<h3>Unidade(s) próxima(s) ao bairro ${data.bairro}:</h3>`;
+                    }
+                }
+
+                // Se não encontrou por bairro ou o bairro do CEP era vazio, tenta por cidade e estado
+                if (foundUnits.length === 0) {
+                    const unitsByCity = unitsData.filter(unit => 
+                        unit.city === cepCity && unit.state === cepState
+                    );
+                    if (unitsByCity.length > 0) {
+                        foundUnits = unitsByCity;
+                        messageHeader = `<h3>Unidade(s) em ${data.localidade}:</h3>`;
+                    }
+                }
+                
+                // Se ainda não encontrou por cidade, tenta por estado (menos específico)
+                if (foundUnits.length === 0) {
+                    const unitsByState = unitsData.filter(unit => 
+                        unit.state === cepState
+                    );
+                    if (unitsByState.length > 0) {
+                        foundUnits = unitsByState;
+                        messageHeader = `<h3>Unidade(s) no estado de ${data.uf}:</h3>`;
+                    }
+                }
+
+
+                if (foundUnits.length > 0) {
+                    let resultsHTML = messageHeader; // Use o cabeçalho gerado
+                    
+                    foundUnits.forEach(unit => {
+                        resultsHTML += `
+                            <div class="unit-item">
+                                <h3>${unit.name}</h3>
+                                <p><strong>Endereço:</strong> ${unit.address}</p>
+                                <p><strong>Telefone:</strong> ${unit.phone}</p>
+                                <p><a href="${unit.mapLink}" target="_blank" class="btn-saiba-mais">Ver no Mapa</a></p>
+                            </div>
+                        `;
+                    });
+                    unitResultsDiv.innerHTML = resultsHTML;
+                } else {
+                    // Se nenhuma unidade foi encontrada após todas as tentativas
+                    unitResultsDiv.innerHTML = `
+                        <h3>Nenhuma unidade encontrada para a sua região (${data.localidade} - ${data.uf}).</h3>
+                        <p>Nossas unidades atuais em Florianópolis, SC, são:</p>
+                    `;
+                    // Exibe todas as unidades como fallback
+                    unitsData.forEach(unit => {
+                         unitResultsDiv.innerHTML += `
+                            <div class="unit-item">
+                                <h3>${unit.name}</h3>
+                                <p><strong>Endereço:</strong> ${unit.address}</p>
+                                <p><strong>Telefone:</strong> ${unit.phone}</p>
+                                <p><a href="${unit.mapLink}" target="_blank" class="btn-saiba-mais">Ver no Mapa</a></p>
+                            </div>
+                        `;
+                    });
+                }
+
+            } catch (error) {
+                console.error('Erro de rede ou API ao buscar CEP:', error); // Mensagem mais específica
+                showCepError('Ocorreu um erro ao buscar o CEP. Por favor, verifique sua conexão ou tente novamente mais tarde.');
+            } finally {
+                // Reabilita o botão
+                searchCepBtn.textContent = 'Buscar Unidade';
+                searchCepBtn.disabled = false;
+            }
+        });
     }
 
     // --- Lógica de Envio de Formulário com EmailJS ---
