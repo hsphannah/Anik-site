@@ -224,6 +224,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         state: "sc",
                         neighborhood: "campeche"
                     },
+                     {
+                        name: "Unidade Kobrasol",
+                        address: "Rua Koesa 305 sobreloja - Kobrasol,Florianópolis - SC",
+                        phone: "0800 323 3000",
+                        mapLink: "https://g.co/kgs/JdyboeW",
+                        city: "florianópolis",
+                        state: "sc",
+                        neighborhood: "kobrasol"
+                    },
                 ];
 
                 // Prioridade de busca: 1. Bairro, 2. Cidade, 3. Estado
