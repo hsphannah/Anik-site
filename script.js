@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         name: "Unidade Campeche",
                         address: "Av. Pequeno Príncipe,1455-sala 7- Campeche,Florianópolis - SC",
-                        phone: "(48) 99613-2762",
+                        phone: "0800 323 3000",
                         mapLink: "https://www.google.com/maps/search/?api=1&query=Art+Anik+School+Av.+Pequeno+Príncipe,+1455,+sala+7,+Campeche,+Florianópolis,+SC",
                         city: "florianópolis",
                         state: "sc",
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         name: "Unidade Kobrasol",
                         address: "Rua Koesa 305 sobreloja - Kobrasol,Florianópolis - SC",
                         phone: "0800 323 3000",
-                        mapLink: "https://g.co/kgs/JdyboeW",
+                        mapLink: "https://maps.app.goo.gl/nFB3hBBHYFjqeR447",
                         city: "florianópolis",
                         state: "sc",
                         neighborhood: "kobrasol"
